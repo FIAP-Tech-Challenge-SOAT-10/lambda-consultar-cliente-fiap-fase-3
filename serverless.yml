@@ -1,0 +1,93 @@
+service: lambda-consultar-cliente
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    MYSQL_HOST: ${self:custom.stages.${self:provider.stage}.mysql.host}
+    MYSQL_USER: ${self:custom.stages.${self:provider.stage}.mysql.user}
+    MYSQL_PASSWORD: ${self:custom.stages.${self:provider.stage}.mysql.password}
+    MYSQL_DATABASE: ${self:custom.stages.${self:provider.stage}.mysql.database}
+    MYSQL_PORT: ${self:custom.stages.${self:provider.stage}.mysql.port}
+
+functions:
+  consultarCliente:
+    handler: src/lambda_function.lambda_handler
+    events:
+      - http:
+          path: consultar-cliente
+          method: post
+          cors: true
+    layers:
+      - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:${self:service}-dependencies:1
+
+layers:
+  Dependencies:
+    path: layer
+    name: ${self:service}-dependencies
+    description: Dependencies for ${self:service}
+    compatibleRuntimes:
+      - python3.9
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  individually: true
+  patterns:
+    - 'src/**'
+    - 'requirements.txt'
+    - 'setup.py'
+    - '!node_modules/**'
+    - '!venv/**'
+    - '!.git/**'
+    - '!.vscode/**'
+    - '!.serverless/**'
+    - '!__pycache__/**'
+    - '!.pytest_cache/**'
+    - '!layer/**'
+    - '!package/**'
+
+custom:
+  stages:
+    dev:
+      mysql:
+        host: ${env:MYSQL_HOST}
+        user: ${env:MYSQL_USER}
+        password: ${env:MYSQL_PASSWORD}
+        database: ${env:MYSQL_DATABASE}
+        port: ${env:MYSQL_PORT}
+    prod:
+      mysql:
+        host: ${env:MYSQL_HOST}
+        user: ${env:MYSQL_USER}
+        password: ${env:MYSQL_PASSWORD}
+        database: ${env:MYSQL_DATABASE}
+        port: ${env:MYSQL_PORT}
+  pythonRequirements:
+    noDeploy:
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - python-dateutil
+      - s3transfer
+      - six
+      - urllib3
+    zip: true
+    slim: true
+    strip: true
+    useStaticCache: true
+    useDownloadCache: true
+    cacheLocation: './.serverless/requirements'
+    noCache: false
+    dockerizePip: true
+    layer:
+      name: python-deps
+      description: Python dependencies
+    compatibleRuntimes:
+      - python3.9
