@@ -9,7 +9,7 @@ deploy:
 	rm -rf .serverless
 	rm -rf node_modules
 	npm install
-	npx serverless deploy
+	npx serverless@3.38.0 deploy
 
 test:
 	PYTHONPATH=$PYTHONPATH:. python -m pytest -p no:warnings
