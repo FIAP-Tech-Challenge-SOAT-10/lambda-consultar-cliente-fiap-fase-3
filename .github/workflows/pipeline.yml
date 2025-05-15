@@ -120,6 +120,13 @@ jobs:
       - name: 🧹 Clear npm cache
         run: npm cache clean --force
 
+      - name: 🧹 Clean environment
+        run: |
+          rm -rf .serverless
+          rm -rf node_modules
+          rm -rf __pycache__
+          rm -rf .pytest_cache
+
       - name: 📦 Install npm dependencies
         run: npm install
 

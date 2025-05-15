@@ -1,4 +1,4 @@
-.PHONY: install deploy test
+.PHONY: install deploy test clean
 
 install:
 	pip install -r requirements.txt
@@ -6,6 +6,9 @@ install:
 	echo "Done"
 
 deploy:
+	rm -rf .serverless
+	rm -rf node_modules
+	npm install
 	npx serverless deploy
 
 test:
@@ -14,4 +17,5 @@ test:
 clean:
 	rm -rf .serverless
 	rm -rf __pycache__
-	rm -rf .pytest_cache 
+	rm -rf .pytest_cache
+	rm -rf node_modules 
