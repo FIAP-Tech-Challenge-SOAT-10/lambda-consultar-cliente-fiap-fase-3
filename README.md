@@ -47,4 +47,3 @@ O deploy da aplicação pode ser realizado de duas formas:
 - API Gateway
 - Serverless Framework
 - GitHub Actions
-
