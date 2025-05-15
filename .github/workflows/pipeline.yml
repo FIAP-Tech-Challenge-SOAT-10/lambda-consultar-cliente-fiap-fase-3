@@ -128,13 +128,15 @@ jobs:
           rm -rf .pytest_cache
 
       - name: 📦 Install npm dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install -g serverless@3.38.0
 
       - name: 📦 Install Python dependencies
         run: make install
 
       - name: 🚀 Deploy using Serverless
-        run: make deploy
+        run: serverless deploy --verbose --stage prod
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

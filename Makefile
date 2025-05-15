@@ -3,13 +3,15 @@
 install:
 	pip install -r requirements.txt
 	npm install
+	npm install -g serverless@3.38.0
 	echo "Done"
 
 deploy:
 	rm -rf .serverless
 	rm -rf node_modules
 	npm install
-	npx serverless@3.38.0 deploy
+	npm install -g serverless@3.38.0
+	serverless deploy
 
 test:
 	PYTHONPATH=$PYTHONPATH:. python -m pytest -p no:warnings
