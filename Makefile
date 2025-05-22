@@ -1,23 +1,18 @@
 .PHONY: install deploy test clean
 
 install:
+	pip install --upgrade pip
 	pip install -r requirements.txt
-	npm install
-	npm install -g serverless
-	echo "Done"
+	npm ci
+	npx serverless plugin install -n serverless-python-requirements
+	echo "✅ Dependencies installed"
 
-deploy:
-	rm -rf .serverless
-	rm -rf node_modules
-	npm install
-	npm install -g serverless
-	serverless deploy
+deploy: install
+	npx serverless deploy --stage prod --verbose
 
 test:
-	PYTHONPATH=$PYTHONPATH:. python -m pytest -p no:warnings
+	PYTHONPATH=$$PYTHONPATH:. python -m pytest -p no:warnings
 
 clean:
-	rm -rf .serverless
-	rm -rf __pycache__
-	rm -rf .pytest_cache
-	rm -rf node_modules 
+	rm -rf .serverless __pycache__ .pytest_cache node_modules
+	echo "🧹 Cleaned project"
