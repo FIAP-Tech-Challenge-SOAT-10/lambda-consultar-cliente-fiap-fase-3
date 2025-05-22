@@ -1,6 +1,6 @@
 service: lambda-consultar-cliente
 
-frameworkVersion: '^3.42.3'  # or any known valid v3 version range
+frameworkVersion: '3.40.0'  # or any known valid v3 version range
 
 provider:
   name: aws
