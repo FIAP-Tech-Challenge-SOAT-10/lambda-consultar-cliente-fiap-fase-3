@@ -2,8 +2,10 @@
   "name": "lambda-consultar-cliente",
   "version": "1.0.0",
   "description": "Lambda function to consult client information",
+  "type": "module",
   "scripts": {
-    "postinstall": "serverless plugin install -n serverless-python-requirements"
+    "deploy": "npx serverless deploy --stage prod --verbose",
+    "postinstall": "npx serverless plugin install -n serverless-python-requirements"
   },
   "devDependencies": {
     "serverless": "^3.40.0",
