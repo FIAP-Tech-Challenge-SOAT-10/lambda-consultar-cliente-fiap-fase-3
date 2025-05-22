@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "PyJWT==2.8.0",
-        "pymysql==1.1.0",
+        "pymysql==1.1.1",
         "python-dotenv==1.0.1",
     ],
 ) 
