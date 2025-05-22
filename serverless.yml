@@ -4,7 +4,7 @@ frameworkVersion: '^3'
 
 provider:
   name: aws
-  runtime: python3.12
+  runtime: python3.11
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   environment:
@@ -31,7 +31,7 @@ layers:
     name: ${self:service}-dependencies
     description: Dependencies for ${self:service}
     compatibleRuntimes:
-      - python3.12
+      - python3.11
 
 plugins:
   - serverless-python-requirements
@@ -75,4 +75,4 @@ custom:
       name: python-deps
       description: Python dependencies
     compatibleRuntimes:
-      - python3.12
+      - python3.11
