@@ -1,18 +1,17 @@
 service: lambda-consultar-cliente
 
-frameworkVersion: '3.38.0'
-
 provider:
   name: aws
   runtime: python3.12
   stage: ${opt:stage, 'dev'}
   region: us-east-1
+  frameworkVersion: '^3.40.0'
   environment:
-    MYSQL_HOST: ${self:custom.stages.${self:provider.stage}.mysql.host}
-    MYSQL_USER: ${self:custom.stages.${self:provider.stage}.mysql.user}
-    MYSQL_PASSWORD: ${self:custom.stages.${self:provider.stage}.mysql.password}
-    MYSQL_DATABASE: ${self:custom.stages.${self:provider.stage}.mysql.database}
-    MYSQL_PORT: ${self:custom.stages.${self:provider.stage}.mysql.port}
+    MYSQL_HOST: ${ssm:/${self:service}/${self:provider.stage}/mysql/host}
+    MYSQL_USER: ${ssm:/${self:service}/${self:provider.stage}/mysql/user}
+    MYSQL_PASSWORD: ${ssm:/${self:service}/${self:provider.stage}/mysql/password}
+    MYSQL_DATABASE: ${ssm:/${self:service}/${self:provider.stage}/mysql/database}
+    MYSQL_PORT: ${ssm:/${self:service}/${self:provider.stage}/mysql/port}
 
 functions:
   consultarCliente:

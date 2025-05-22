@@ -130,7 +130,7 @@ jobs:
       - name: 📦 Install npm dependencies
         run: |
           npm install
-          npm install -g serverless@3.38.0
+          npm install -g serverless
 
       - name: 📦 Install Python dependencies
         run: make install
