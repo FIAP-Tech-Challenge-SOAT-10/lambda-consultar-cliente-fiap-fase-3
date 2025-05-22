@@ -49,7 +49,7 @@ jobs:
         aws ssm put-parameter --name "/lambda-consultar-cliente/prod/mysql/port" --value "${{ secrets.MYSQL_PORT }}" --type SecureString --overwrite
 
     - name: Deploy to AWS Lambda
-      run: serverless deploy --verbose --stage prod
+      run:  npx serverless deploy --verbose --stage prod
 
     - name: Cleanup
       if: always()
