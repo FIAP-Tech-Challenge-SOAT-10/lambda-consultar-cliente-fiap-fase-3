@@ -1,12 +1,12 @@
 {
-  "name": "lambda-authorizer",
+  "name": "lambda-consultar-cliente",
   "version": "1.0.0",
-  "description": "Lambda authorizer with JWT and CPF authentication",
+  "description": "Lambda function to consult client information",
   "scripts": {
     "postinstall": "serverless plugin install -n serverless-python-requirements"
   },
   "devDependencies": {
-    "serverless": "3.40.0",
+    "serverless": "^3.40.0",
     "serverless-python-requirements": "^6.1.2"
   }
 }

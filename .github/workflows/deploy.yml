@@ -18,14 +18,17 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.12'
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
 
-    - name: Install dependencies
+    - name: Install Node.js dependencies
+      run: npm install
+
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -37,20 +40,20 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Install Serverless Framework
-      run: npm install -g "serverless@^3"
+    - name: Store MySQL parameters in SSM
+      run: |
+        aws ssm put-parameter --name "/lambda-consultar-cliente/prod/mysql/host" --value "${{ secrets.MYSQL_HOST }}" --type SecureString --overwrite
+        aws ssm put-parameter --name "/lambda-consultar-cliente/prod/mysql/user" --value "${{ secrets.MYSQL_USER }}" --type SecureString --overwrite
+        aws ssm put-parameter --name "/lambda-consultar-cliente/prod/mysql/password" --value "${{ secrets.MYSQL_PASSWORD }}" --type SecureString --overwrite
+        aws ssm put-parameter --name "/lambda-consultar-cliente/prod/mysql/database" --value "${{ secrets.MYSQL_DATABASE }}" --type SecureString --overwrite
+        aws ssm put-parameter --name "/lambda-consultar-cliente/prod/mysql/port" --value "${{ secrets.MYSQL_PORT }}" --type SecureString --overwrite
 
     - name: Deploy to AWS Lambda
-      run: |
-        serverless deploy --verbose --stage prod
-      env:
-        MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-        MYSQL_USER: ${{ secrets.MYSQL_USER }}
-        MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-        MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+      run: serverless deploy --verbose --stage prod
 
-    - name: Cleanup .env file
+    - name: Cleanup
       if: always()
       run: |
-        rm -f .env
+        rm -rf .serverless
+        rm -rf node_modules
+        rm -rf .venv
