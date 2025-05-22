@@ -1,6 +1,6 @@
 service: lambda-consultar-cliente
 
-frameworkVersion: '3.38.0'
+frameworkVersion: latest'
 
 provider:
   name: aws
